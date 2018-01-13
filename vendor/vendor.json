@@ -1,0 +1,23 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"path": "github/yhat/scrape",
+			"revision": ""
+		},
+		{
+			"checksumSHA1": "ag6CP2CjfMRiJxDuBDVKytu5sR8=",
+			"path": "golang.org/x/net/html",
+			"revision": "5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec",
+			"revisionTime": "2018-01-12T01:53:59Z"
+		},
+		{
+			"checksumSHA1": "uMRr2bnIJS+9Xm0FqMBYUTzaSGs=",
+			"path": "golang.org/x/net/html/atom",
+			"revision": "5ccada7d0a7ba9aeb5d3aca8d3501b4c2a509fec",
+			"revisionTime": "2018-01-12T01:53:59Z"
+		}
+	],
+	"rootPath": "mls-scraper"
+}
