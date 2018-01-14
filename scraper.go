@@ -1,36 +1,24 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
-	"net/http"
-
-	"golang.org/x/net/html"
-	"golang.org/x/net/html/atom"
 )
 
-const fotMobURL = "https://www.fotmob.com/leagues/130/matches/"
+func scrapeFotMob() {
+	fixtures, err := getFixtures()
+	if err != nil {
+		panic(err)
+	}
 
-func scrape() {
-	resp, err := http.Get(fotMobURL)
+	jsonStr, err := json.Marshal(fixtures)
 	if err != nil {
-		panic(err)
+		fmt.Println(err)
+		return
 	}
-	root, err := html.Parse(resp.Body)
-	if err != nil {
-		panic(err)
-	}
-	matcher := func(n *html.Node) bool {
-		if n.DataAtom == atom.A && n.Parent != nil && n.Parent.Parent != nil {
-			return scrape.Attr(n.Parent.Parent, "class") == "athing"
-		}
-		return false
-	}
-	articles := scrape.FindAll(root, matcher)
-	for i, article := range articles {
-		fmt.Printf("%2d %s (%s)\n", i, scrape.Text(article), scrape.Attr(article, "href"))
-	}
+	fmt.Println(string(jsonStr))
 }
 
 func main() {
-	scrape()
+	scrapeFotMob()
 }
