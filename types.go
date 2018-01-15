@@ -6,6 +6,13 @@ import (
 	"time"
 )
 
+// ByKickoff is a type for sorting Fixtures by kickoff
+type ByKickoff []Fixture
+
+func (f ByKickoff) Len() int           { return len(f) }
+func (f ByKickoff) Swap(i, j int)      { f[i], f[j] = f[j], f[i] }
+func (f ByKickoff) Less(i, j int) bool { return f[i].MatchDate.Time.Before(f[j].MatchDate.Time) }
+
 // kickoffTime needed to parse the info
 type kickoffTime struct {
 	time.Time
@@ -21,15 +28,15 @@ type Team struct {
 
 // Fixture is another term for match or game
 type Fixture struct {
-	AwayScore     int `json:"awayScore,string"`
+	AwayScore     int `json:"awayScore,string,omitempty"`
 	AwayTeam      Team
 	Finished      bool
-	HomeScore     int `json:"homeScore,string"`
+	HomeScore     int `json:"homeScore,string,omitempty"`
 	HomeTeam      Team
 	ID            int         `json:"id,string"`
 	MatchDate     kickoffTime `json:"matchDate,string"`
-	StatusInt     int         `json:"status,string"`
-	StatusOfMatch string
+	StatusInt     int         `json:"status,string,omitempty"`
+	StatusOfMatch string      `json:"statusOfMatch,omitempty"`
 }
 
 // FotMobData has a bunch of extra stuff
@@ -70,6 +77,9 @@ func (n *teamName) UnmarshalText(data []byte) error {
 	case "Orlando City":
 		*n = "Orlando City SC"
 	default:
+		if err := isValidTeam(string(data)); err != nil {
+			return err
+		}
 		*n = teamName(string(data))
 	}
 	return nil

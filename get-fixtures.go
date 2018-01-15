@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"net/url"
 	"regexp"
+	"sort"
 
 	"github.com/yhat/scrape"
 	"golang.org/x/net/html"
@@ -39,5 +40,7 @@ func getFixtures() ([]Fixture, error) {
 	if err = json.Unmarshal([]byte(decoded), &data); err != nil {
 		return nil, err
 	}
-	return data.League.Fixtures, nil
+	fixtures := data.League.Fixtures
+	sort.Sort(ByKickoff(fixtures))
+	return fixtures, nil
 }
