@@ -2,6 +2,7 @@ package main
 
 import (
 	"log"
+	"mls-scraper/standings"
 	"net/http"
 	"os"
 
@@ -20,6 +21,8 @@ func main() {
 	router.Use(gin.Logger())
 
 	router.GET("/reddit/:team/automod", automod)
+	router.GET("/standings/shield", standings.Shield)
+	router.GET("/standings/conference/:conference", standings.Conference)
 	router.GET("/", func(c *gin.Context) {
 		fixtures, err := getFixtures()
 		if err != nil {
