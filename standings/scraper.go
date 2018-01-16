@@ -109,7 +109,8 @@ func intFromScrape(node *html.Node) int {
 	return i
 }
 
-func getShieldStandings() (Standings, error) {
+// GetShield gets shield standings
+func GetShield() (Standings, error) {
 	resp, err := http.Get("https://www.mlssoccer.com/standings/supporters-shield")
 	if err != nil {
 		return nil, err
@@ -123,7 +124,8 @@ func getShieldStandings() (Standings, error) {
 	return standings, nil
 }
 
-func getConferenceStandings(conference string) (Standings, error) {
+// GetFor gets standings for conference
+func GetFor(conference string) (Standings, error) {
 	resp, err := http.Get("https://www.mlssoccer.com/standings")
 	if err != nil {
 		return nil, err

@@ -10,7 +10,7 @@ import (
 
 // Shield gives Supporters Shield Standings
 func Shield(c *gin.Context) {
-	standings, err := getShieldStandings()
+	standings, err := GetShield()
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 	}
@@ -25,7 +25,7 @@ func Conference(c *gin.Context) {
 	if conference != "east" && conference != "west" {
 		c.AbortWithError(http.StatusBadRequest, errors.New("Invalid Conference"))
 	}
-	standings, err := getConferenceStandings(conference)
+	standings, err := GetFor(conference)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 	}
