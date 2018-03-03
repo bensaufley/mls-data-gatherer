@@ -23,12 +23,18 @@ func getTeam(c *gin.Context) string {
 	return team
 }
 
+func getOffset(c *gin.Context) time.Duration {
+	offset, _ := strconv.Atoi(c.DefaultQuery("offset", "0"))
+	return time.Duration(offset)
+}
+
 // AutoMod can be accessed at /reddit/:team/automod
 func AutoMod(c *gin.Context) {
 	team := getTeam(c)
 	if team == "" {
 		return
 	}
+	offset := getOffset(c)
 
 	teamFixtures, err := fixtures.For(team)
 	if err != nil {
@@ -40,7 +46,7 @@ func AutoMod(c *gin.Context) {
 
 	for _, fixture := range teamFixtures {
 		response.WriteString("---\nfirst: \"" +
-			fixture.MatchDate.Format("January 2, 2006 15:04 -07") + "\"\n" +
+			(fixture.MatchDate.Add(-60 * offset * time.Minute)).Format("January 2, 2006 15:04 -07") + "\"\n" +
 			"sticky: false\n" +
 			"distinguish: true\n" +
 			"title: \"" + string(fixture.HomeTeam.Name) + " vs " + string(fixture.AwayTeam.Name) + " - Match Thread\"\n" +
