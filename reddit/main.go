@@ -40,7 +40,7 @@ func AutoMod(c *gin.Context) {
 
 	for _, fixture := range teamFixtures {
 		response.WriteString("---\nfirst: \"" +
-			fixture.MatchDate.Format("January 1, 2006 15:04 -07") + "\"\n" +
+			fixture.MatchDate.Format("January 2, 2006 15:04 -07") + "\"\n" +
 			"sticky: false\n" +
 			"distinguish: true\n" +
 			"title: \"" + string(fixture.HomeTeam.Name) + " vs " + string(fixture.AwayTeam.Name) + " - Match Thread\"\n" +
