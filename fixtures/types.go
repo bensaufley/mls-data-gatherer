@@ -21,10 +21,10 @@ type kickoffTime struct {
 
 // Fixture is another term for match or game
 type Fixture struct {
-	AwayScore     int `json:"awayScore,string,omitempty"`
+	AwayScore     *int `json:"awayScore,string,omitempty"`
 	AwayTeam      teams.Team
 	Finished      bool
-	HomeScore     int `json:"homeScore,string,omitempty"`
+	HomeScore     *int `json:"homeScore,string,omitempty"`
 	HomeTeam      teams.Team
 	ID            int         `json:"id,string"`
 	MatchDate     kickoffTime `json:"matchDate,string"`
