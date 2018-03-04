@@ -107,7 +107,21 @@ func Sidebar(c *gin.Context) {
 		response.WriteString(atV + " " + string(opponent) + " | " +
 			fixture.MatchDate.Time.Format(" 1.02 | 3:04pm | "))
 		if fixture.Finished {
-			response.WriteString(strconv.Itoa(*fixture.HomeScore) + "-" + strconv.Itoa(*fixture.AwayScore))
+			result := "D"
+			if opponent == "New England Revolution" {
+				if *fixture.HomeScore > *fixture.AwayScore {
+					result = "L"
+				} else if *fixture.HomeScore < *fixture.AwayScore {
+					result = "W"
+				}
+			} else {
+				if *fixture.HomeScore > *fixture.AwayScore {
+					result = "W"
+				} else if *fixture.HomeScore < *fixture.AwayScore {
+					result = "L"
+				}
+			}
+			response.WriteString(result + " " + strconv.Itoa(*fixture.HomeScore) + "-" + strconv.Itoa(*fixture.AwayScore))
 		}
 		response.WriteString("\n")
 	}
