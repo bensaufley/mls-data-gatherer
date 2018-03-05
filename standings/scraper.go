@@ -14,6 +14,7 @@ import (
 
 func extractStandingFromNode(row *html.Node, headers []string) Standing {
 	var standing Standing
+	teamRegExp := regexp.MustCompile(`^(?:([syx]) - )?(?:[A-Z]+) (.+)$`)
 	cols := scrape.FindAll(row, scrape.ByTag(atom.Td))
 	for j, col := range cols {
 		switch headers[j] {
@@ -21,27 +22,19 @@ func extractStandingFromNode(row *html.Node, headers []string) Standing {
 			standing.Place = intFromScrape(col)
 		case "Club":
 			content := scrape.Text(col)
-			pieces := strings.Split(content, " - ")
-			if len(pieces) == 1 {
-				standing.Name = content
-			} else {
-				switch pieces[0] {
-				case "s":
-					standing.ShieldWinner = true
-					standing.ConferenceWinner = true
-					standing.Clinched = true
-					standing.Name = pieces[1]
-				case "y":
-					standing.ConferenceWinner = true
-					standing.Clinched = true
-					standing.Name = pieces[1]
-				case "x":
-					standing.Clinched = true
-					standing.Name = pieces[1]
-				default:
-					standing.Name = pieces[0]
-				}
+			pieces := teamRegExp.FindStringSubmatch(content)
+			switch pieces[1] {
+			case "s":
+				standing.ShieldWinner = true
+				standing.ConferenceWinner = true
+				standing.Clinched = true
+			case "y":
+				standing.ConferenceWinner = true
+				standing.Clinched = true
+			case "x":
+				standing.Clinched = true
 			}
+			standing.Name = pieces[2]
 		case "PTS":
 			standing.Points = intFromScrape(col)
 		case "GP":

@@ -131,11 +131,11 @@ func Sidebar(c *gin.Context) {
 
 // Standings can be accessed at /reddit/:team/standings
 func Standings(c *gin.Context) {
-	team := getTeam(c)
-	if team == "" {
+	requestedTeam := getTeam(c)
+	if requestedTeam == "" {
 		return
 	}
-	conference := teams.ConferenceFor(team)
+	conference := teams.ConferenceFor(requestedTeam)
 
 	table, err := standings.GetFor(conference)
 	if err != nil {
@@ -144,24 +144,24 @@ func Standings(c *gin.Context) {
 
 	var response bytes.Buffer
 	response.WriteString("Club | Pts | PPG | W | L | T | GD\n-----|:---:|:---:|:-:|:-:|:-:|:--\n")
-	for _, standing := range table {
-		abbrv, _ := teams.AbbrevFor(standing.Name)
+	for _, team := range table {
+		abbrv, _ := teams.AbbrevFor(team.Name)
 		as := ""
-		if abbrv == team {
+		if abbrv == requestedTeam {
 			as = "**"
 		}
 		gpg := 0
-		if standing.GamesPlayed > 0 {
-			gpg = standing.Points / standing.GamesPlayed
+		if team.GamesPlayed > 0 {
+			gpg = team.Points / team.GamesPlayed
 		}
 		cols := []string{
-			"[](#" + strings.ToUpper(abbrv) + ") " + standing.Name,
-			strconv.Itoa(standing.Points),
+			"[](#" + strings.ToUpper(abbrv) + ") " + team.Name,
+			strconv.Itoa(team.Points),
 			strconv.Itoa(gpg),
-			strconv.Itoa(standing.OverallStats.Wins),
-			strconv.Itoa(standing.OverallStats.Losses),
-			strconv.Itoa(standing.OverallStats.Draws),
-			strconv.Itoa(standing.GoalDifferential),
+			strconv.Itoa(team.OverallStats.Wins),
+			strconv.Itoa(team.OverallStats.Losses),
+			strconv.Itoa(team.OverallStats.Draws),
+			strconv.Itoa(team.GoalDifferential),
 		}
 		response.WriteString(as + strings.Join(cols, as+" | "+as) + as + "\n")
 	}
