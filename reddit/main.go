@@ -108,7 +108,7 @@ func Sidebar(c *gin.Context) {
 			fixture.MatchDate.Time.Format(" 1.02 | 3:04pm | "))
 		if fixture.Finished {
 			result := "D"
-			if opponent == "New England Revolution" {
+			if atV == "@" {
 				if *fixture.HomeScore > *fixture.AwayScore {
 					result = "L"
 				} else if *fixture.HomeScore < *fixture.AwayScore {
