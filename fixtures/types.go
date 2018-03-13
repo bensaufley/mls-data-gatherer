@@ -1,7 +1,7 @@
 package fixtures
 
 import (
-	"mls-scraper/teams"
+	"mls-data-gatherer/teams"
 	"regexp"
 	"strconv"
 	"time"

@@ -3,7 +3,7 @@ package fixtures
 import (
 	"encoding/json"
 	"errors"
-	"mls-scraper/teams"
+	"mls-data-gatherer/teams"
 	"net/http"
 	"net/url"
 	"regexp"

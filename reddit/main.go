@@ -3,9 +3,9 @@ package reddit
 import (
 	"bytes"
 	"log"
-	"mls-scraper/fixtures"
-	"mls-scraper/standings"
-	"mls-scraper/teams"
+	"mls-data-gatherer/fixtures"
+	"mls-data-gatherer/standings"
+	"mls-data-gatherer/teams"
 	"net/http"
 	"strconv"
 	"strings"

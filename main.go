@@ -2,9 +2,9 @@ package main
 
 import (
 	"log"
-	"mls-scraper/fixtures"
-	"mls-scraper/reddit"
-	"mls-scraper/standings"
+	"mls-data-gatherer/fixtures"
+	"mls-data-gatherer/reddit"
+	"mls-data-gatherer/standings"
 	"net/http"
 	"os"
 
