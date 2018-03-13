@@ -1,10 +1,11 @@
 package fixtures
 
 import (
-	"mls-data-gatherer/teams"
 	"regexp"
 	"strconv"
 	"time"
+
+	"github.com/bensaufley/mls-data-gatherer/teams"
 )
 
 // ByKickoff is a type for sorting Fixtures by kickoff

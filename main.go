@@ -2,11 +2,12 @@ package main
 
 import (
 	"log"
-	"mls-data-gatherer/fixtures"
-	"mls-data-gatherer/reddit"
-	"mls-data-gatherer/standings"
 	"net/http"
 	"os"
+
+	"github.com/bensaufley/mls-data-gatherer/fixtures"
+	"github.com/bensaufley/mls-data-gatherer/reddit"
+	"github.com/bensaufley/mls-data-gatherer/standings"
 
 	"github.com/gin-gonic/gin"
 	_ "github.com/heroku/x/hmetrics/onload"

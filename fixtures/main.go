@@ -3,11 +3,12 @@ package fixtures
 import (
 	"encoding/json"
 	"errors"
-	"mls-data-gatherer/teams"
 	"net/http"
 	"net/url"
 	"regexp"
 	"sort"
+
+	"github.com/bensaufley/mls-data-gatherer/teams"
 
 	"github.com/yhat/scrape"
 	"golang.org/x/net/html"

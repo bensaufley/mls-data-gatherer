@@ -3,13 +3,14 @@ package reddit
 import (
 	"bytes"
 	"log"
-	"mls-data-gatherer/fixtures"
-	"mls-data-gatherer/standings"
-	"mls-data-gatherer/teams"
 	"net/http"
 	"strconv"
 	"strings"
 	"time"
+
+	"github.com/bensaufley/mls-data-gatherer/fixtures"
+	"github.com/bensaufley/mls-data-gatherer/standings"
+	"github.com/bensaufley/mls-data-gatherer/teams"
 
 	"github.com/gin-gonic/gin"
 )
