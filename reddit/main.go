@@ -151,14 +151,14 @@ func Standings(c *gin.Context) {
 		if abbrv == requestedTeam {
 			as = "**"
 		}
-		gpg := 0
+		gpg := 0.0
 		if team.GamesPlayed > 0 {
-			gpg = team.Points / team.GamesPlayed
+			gpg = float64(team.Points) / float64(team.GamesPlayed)
 		}
 		cols := []string{
 			"[](#" + strings.ToUpper(abbrv) + ") " + team.Name,
 			strconv.Itoa(team.Points),
-			strconv.Itoa(gpg),
+			strconv.FormatFloat(gpg, 'f', 2, 64),
 			strconv.Itoa(team.OverallStats.Wins),
 			strconv.Itoa(team.OverallStats.Losses),
 			strconv.Itoa(team.OverallStats.Draws),
