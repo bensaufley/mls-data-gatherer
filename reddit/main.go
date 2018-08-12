@@ -46,13 +46,13 @@ func AutoMod(c *gin.Context) {
 	var response bytes.Buffer
 
 	for _, fixture := range teamFixtures {
-		response.WriteString("---\nfirst: \"" +
+		response.WriteString("---\n    first: \"" +
 			(fixture.MatchDate.Add(-60 * offset * time.Minute)).Format("January 2, 2006 15:04 -07") + "\"\n" +
-			"sticky: false\n" +
-			"distinguish: true\n" +
-			"title: \"" + string(fixture.HomeTeam.Name) + " vs " + string(fixture.AwayTeam.Name) + " - Match Thread\"\n" +
-			"text: |\n" +
-			"  Official match discussion thread\n\n")
+			"    sticky: false\n" +
+			"    distinguish: true\n" +
+			"    title: \"" + string(fixture.HomeTeam.Name) + " vs " + string(fixture.AwayTeam.Name) + " - Match Thread\"\n" +
+			"    text: |\n" +
+			"      Official match discussion thread\n\n")
 	}
 
 	log.Printf("Successful request for %s", team)
