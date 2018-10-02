@@ -14,7 +14,7 @@ import (
 
 func extractStandingFromNode(row *html.Node, headers []string) Standing {
 	var standing Standing
-	teamRegExp := regexp.MustCompile(`^(?:([syx]) - )?(?:[A-Z]+) (.+)$`)
+	teamRegExp := regexp.MustCompile(`^(?:([syxe]) - )?(?:[A-Z]+) (.+)$`)
 	cols := scrape.FindAll(row, scrape.ByTag(atom.Td))
 	for j, col := range cols {
 		switch headers[j] {

@@ -59,8 +59,8 @@ func AutoMod(c *gin.Context) {
 	c.String(http.StatusOK, response.String())
 }
 
-// Sidebar can be accessed at /reddit/:team/sidebar
-func Sidebar(c *gin.Context) {
+// Schedule can be accessed at /reddit/:team/schedule
+func Schedule(c *gin.Context) {
 	team := getTeam(c)
 	if team == "" {
 		return

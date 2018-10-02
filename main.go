@@ -24,7 +24,7 @@ func main() {
 	router.Use(gin.Logger())
 
 	router.GET("/reddit/:team/automod", reddit.AutoMod)
-	router.GET("/reddit/:team/sidebar", reddit.Sidebar)
+	router.GET("/reddit/:team/schedule", reddit.Schedule)
 	router.GET("/reddit/:team/standings", reddit.Standings)
 	router.GET("/standings/shield", standings.Shield)
 	router.GET("/standings/conference/:conference", standings.Conference)
