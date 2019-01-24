@@ -2,7 +2,7 @@ package teams
 
 // Conferences maps team abbreviations to conferences
 var Conferences = map[string][]string{
-	"east": []string{"atl", "chi", "clb", "dc", "mtl", "ner", "nyc", "nyrb", "orl", "phi", "tfc"},
+	"east": []string{"atl", "chi", "clb", "dc", "fcc", "mtl", "ner", "nyc", "nyrb", "orl", "phi", "tfc"},
 	"west": []string{"dal", "hou", "col", "lag", "lafc", "min", "por", "rsl", "sj", "sea", "kc", "van"},
 }
 
@@ -28,12 +28,14 @@ type Team struct {
 }
 
 // Teams is the canonical list of team names and abbreviations
-var Teams = map[string]string{"atl": "Atlanta United FC",
+var Teams = map[string]string{
+	"atl":  "Atlanta United FC",
 	"chi":  "Chicago Fire",
 	"col":  "Colorado Rapids",
 	"clb":  "Columbus Crew SC",
 	"dc":   "D.C. United",
 	"dal":  "FC Dallas",
+	"fcc":  "FC Cincinnati",
 	"hou":  "Houston Dynamo",
 	"lag":  "LA Galaxy",
 	"lafc": "Los Angeles FC",
