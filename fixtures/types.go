@@ -33,6 +33,13 @@ type Fixture struct {
 	StatusOfMatch string      `json:"statusOfMatch,omitempty"`
 }
 
+// FixtureFor describes a fixture from the perspective of a team
+type FixtureFor struct {
+	Location string
+	Opponent teams.Team
+	Result   string
+}
+
 // FotMobData has a bunch of extra stuff
 type FotMobData struct {
 	League struct {

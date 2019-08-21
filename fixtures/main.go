@@ -17,6 +17,39 @@ import (
 
 const fotMobURL = "https://www.fotmob.com/leagues/130/matches/"
 
+// For returns location (@/v), opponent, and result for a team in a fixture
+func (fixture Fixture) For(team string) (FixtureFor, error) {
+	fullTeamName := teams.Teams[team]
+	result := ""
+	if fixture.Finished && *fixture.HomeScore == *fixture.AwayScore {
+		result = "D"
+	}
+	if string(*fixture.HomeTeam.Name) == fullTeamName {
+		if fixture.Finished && *fixture.HomeScore > *fixture.AwayScore {
+			result = "W"
+		} else if fixture.Finished && *fixture.HomeScore < *fixture.AwayScore {
+			result = "L"
+		}
+		return FixtureFor{
+			Location: "v",
+			Opponent: fixture.AwayTeam,
+			Result:   result,
+		}, nil
+	} else if string(*fixture.AwayTeam.Name) == fullTeamName {
+		if fixture.Finished && *fixture.HomeScore < *fixture.AwayScore {
+			result = "W"
+		} else if fixture.Finished && *fixture.HomeScore > *fixture.AwayScore {
+			result = "L"
+		}
+		return FixtureFor{
+			Location: "@",
+			Opponent: fixture.HomeTeam,
+			Result:   result,
+		}, nil
+	}
+	return FixtureFor{}, errors.New("Team was not in fixture")
+}
+
 // For returns Fixtures for a team
 func For(team string) ([]Fixture, error) {
 	if err := teams.AbbrevIsValid(team); err != nil {
@@ -32,7 +65,7 @@ func For(team string) ([]Fixture, error) {
 	var teamFixtures []Fixture
 
 	for _, fixture := range fixtures {
-		if string(fixture.AwayTeam.Name) == fullTeamName || string(fixture.HomeTeam.Name) == fullTeamName {
+		if string(*fixture.AwayTeam.Name) == fullTeamName || string(*fixture.HomeTeam.Name) == fullTeamName {
 			teamFixtures = append(teamFixtures, fixture)
 		}
 	}

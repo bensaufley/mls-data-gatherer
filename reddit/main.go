@@ -2,7 +2,9 @@ package reddit
 
 import (
 	"bytes"
+	"fmt"
 	"log"
+	"math"
 	"net/http"
 	"strconv"
 	"strings"
@@ -50,7 +52,7 @@ func AutoMod(c *gin.Context) {
 			(fixture.MatchDate.Add(-60 * offset * time.Minute)).Format("January 2, 2006 15:04 -07") + "\"\n" +
 			"    sticky: false\n" +
 			"    distinguish: true\n" +
-			"    title: \"" + string(fixture.HomeTeam.Name) + " vs " + string(fixture.AwayTeam.Name) + " - Match Thread\"\n" +
+			"    title: \"" + string(*fixture.HomeTeam.Name) + " vs " + string(*fixture.AwayTeam.Name) + " - Match Thread\"\n" +
 			"    text: |\n" +
 			"      Official match discussion thread\n\n")
 	}
@@ -66,6 +68,7 @@ func Schedule(c *gin.Context) {
 		return
 	}
 
+	showForm, _ := strconv.Atoi(c.DefaultQuery("showForm", "0"))
 	prevCount, _ := strconv.Atoi(c.DefaultQuery("prevCount", "1"))
 	nextCount, _ := strconv.Atoi(c.DefaultQuery("nextCount", "5"))
 
@@ -91,39 +94,58 @@ func Schedule(c *gin.Context) {
 			}
 		}
 	}
-	lenPrev := len(prevFixtures)
-	if lenPrev > 0 {
-		prevFixtures = prevFixtures[lenPrev-prevCount : lenPrev]
+	selectedPrev := append([]fixtures.Fixture(nil), prevFixtures...)
+	lenPrev := len(selectedPrev)
+	if lenPrev > prevCount {
+		selectedPrev = selectedPrev[lenPrev-prevCount : lenPrev]
 	}
-	allFixtures := append(prevFixtures, nextFixtures...)
+	allFixtures := append(selectedPrev, nextFixtures...)
 	var response bytes.Buffer
+	if showForm > 0 {
+		response.WriteString("Form:")
+		lastFive := prevFixtures[int(math.Max(0, float64(len(prevFixtures)-showForm))):]
+		if len(lastFive) == 0 {
+			response.WriteString(" No Games Yet")
+		}
+		for _, fixture := range lastFive {
+			ff, err := fixture.For(team)
+			if err != nil {
+				log.Printf("Error fixture info for %s in %v: %v\n", team, fixture, err)
+				return
+			}
+			response.WriteString(fmt.Sprintf(" %s", ff.Result))
+		}
+		response.WriteString("\n\n")
+	}
 	response.WriteString("Opponent | Date | Time | Result\n---------|:----:|:----:|-------\n")
 	for _, fixture := range allFixtures {
-		atV := "v"
-		opponent := fixture.AwayTeam.Name
-		if opponent == "New England Revolution" {
-			atV = "@"
-			opponent = fixture.HomeTeam.Name
+		ff, err := fixture.For(team)
+		if err != nil {
+			log.Printf("Error fixture info for %s in %v: %v\n", team, fixture, err)
+			return
 		}
-		response.WriteString(atV + " " + string(opponent) + " | " +
-			fixture.MatchDate.Time.Format(" 1.02 | 3:04pm | "))
-		if fixture.Finished {
-			result := "D"
-			if atV == "@" {
-				if *fixture.HomeScore > *fixture.AwayScore {
-					result = "L"
-				} else if *fixture.HomeScore < *fixture.AwayScore {
-					result = "W"
-				}
-			} else {
-				if *fixture.HomeScore > *fixture.AwayScore {
-					result = "W"
-				} else if *fixture.HomeScore < *fixture.AwayScore {
-					result = "L"
-				}
-			}
-			response.WriteString(result + " " + strconv.Itoa(*fixture.HomeScore) + "-" + strconv.Itoa(*fixture.AwayScore))
+		homeScore := ""
+		if fixture.HomeScore != nil {
+			homeScore = strconv.Itoa(*fixture.HomeScore)
 		}
+		awayScore := ""
+		if fixture.AwayScore != nil {
+			awayScore = strconv.Itoa(*fixture.AwayScore)
+		}
+		score := ""
+		if fixture.Finished && homeScore != "" && awayScore != "" {
+			score = fmt.Sprintf("%s-%s", homeScore, awayScore)
+		}
+		response.WriteString(
+			fmt.Sprintf(
+				"%s %s | %s | %s | %s",
+				ff.Location,
+				*ff.Opponent.Name,
+				fixture.MatchDate.Time.Format("1.02 | 3:04pm"),
+				ff.Result,
+				score,
+			),
+		)
 		response.WriteString("\n")
 	}
 

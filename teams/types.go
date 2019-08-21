@@ -18,13 +18,13 @@ func ConferenceFor(abbrv string) string {
 	return ""
 }
 
-// Name is the name of the team
+// Name is aliased for unmarshaling
 type Name string
 
 // Team contains team data
 type Team struct {
 	ID   int `json:"id,string"`
-	Name Name
+	Name *Name
 }
 
 // Teams is the canonical list of team names and abbreviations
