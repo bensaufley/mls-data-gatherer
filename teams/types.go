@@ -62,6 +62,8 @@ func (n *Name) UnmarshalText(data []byte) error {
 	switch string(data) {
 	case "Atlanta United":
 		*n = "Atlanta United FC"
+	case "Chicago Fire":
+		*n = "Chicago Fire FC"
 	case "Columbus Crew":
 		*n = "Columbus Crew SC"
 	case "DC United":
